@@ -463,7 +463,19 @@ MonoBehaviour:
     m_ActionId: e4947d82-35cd-459b-924c-a905685bdc64
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1199647875}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnJumpInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 797e4d12-91d0-40ba-b649-4dccc0f6f65a
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:

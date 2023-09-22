@@ -83,6 +83,44 @@ public class PlayerController : MonoBehaviour
         {
             curMovementInput = Vector2.zero;
         }
-        // 사용자 입력값 받아오기
+    }
+
+    public void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if(IsGrounded())
+            _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        Ray[] rays = new Ray[4]
+        {
+            new Ray(transform.position + (transform.forward * 0.2f) + (Vector3.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (-transform.forward * 0.2f) + (Vector3.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (transform.right * 0.2f) + (Vector3.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (-transform.right * 0.2f) + (Vector3.up * 0.01f), Vector3.down),
+        };
+
+        for(int i = 0; i < rays.Length; i++)
+        {
+            if (Physics.Raycast(rays[i],0.1f, groundLayerMask))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + (transform.forward * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.forward * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (transform.right * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
     }
 }
