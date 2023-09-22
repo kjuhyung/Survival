@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public LayerMask groundLayerMask;
 
-
     [Header("# Look")]
     public Transform cameraContainer;
     public float minXLook;
@@ -24,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
 
     public static PlayerController instance;
+
     private void Awake()
     {
         instance = this;
@@ -39,15 +39,24 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(canLook)
+        Move();
+    }
+
+    private void LateUpdate()
+    {
+        if (canLook)
         {
             CameraLook();
         }
     }
 
-    private void LateUpdate()
+    private void Move()
     {
-        
+        Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
+        dir *= moveSpeed;
+        dir.y = _rigidbody.velocity.y;
+
+        _rigidbody.velocity = dir;
     }
 
     void CameraLook()
@@ -64,4 +73,16 @@ public class PlayerController : MonoBehaviour
         mouseDelta = context.ReadValue<Vector2>();
     }
    
+    public void OnMoveInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed)
+        {
+            curMovementInput = context.ReadValue<Vector2>();
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            curMovementInput = Vector2.zero;
+        }
+        // 사용자 입력값 받아오기
+    }
 }
