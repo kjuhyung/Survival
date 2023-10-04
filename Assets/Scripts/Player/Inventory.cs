@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class ItemSlot
 {
@@ -59,19 +60,31 @@ public class Inventory : MonoBehaviour
         }
 
         ClearSelectedItemWindow();
-    }    
+    }
+
+    public void OnInventoryButton(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.phase == InputActionPhase.Started)
+        {
+            Toggle();
+        }
+    }
 
     public void Toggle()
     {
         if(inventoryWindow.activeInHierarchy)
         {
             inventoryWindow.SetActive(false);
+            onCloseInventory?.Invoke();
+            controller.ToggleCursor(false);
         }
         else
         {
             inventoryWindow.SetActive(true);
+            onOpenInventory?.Invoke();
+            controller.ToggleCursor(true);
         }
-    }
+    }   
 
     public bool IsOpen()
     {
