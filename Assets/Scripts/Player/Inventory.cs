@@ -123,14 +123,16 @@ public class Inventory : MonoBehaviour
         Instantiate(item.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360f));
     }
 
-    void UpdateUI()
+    void UpdateUI() // UI 업데이트
     {
         for(int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
                 uislots[i].Set(slots[i]);
+            // 아이템이 있으면 정보 할당 - Set()
             else
                 uislots[i].Clear();
+            // 아이템이 없으면 정보 비우기 - Clear();
         }
     }
 
@@ -168,7 +170,11 @@ public class Inventory : MonoBehaviour
         seletedItemStatNames.text = string.Empty;
         seletedItemStatValues.text = string.Empty;
 
-        //
+        for (int i = 0; i < selectedItem.item.consumables.Length; i++)
+        {
+            seletedItemStatNames.text += selectedItem.item.consumables[i].type.ToString() + "\n";
+            seletedItemStatValues.text += selectedItem.item.consumables[i].value.ToString() + "\n";
+        }
 
         useButton.SetActive(selectedItem.item.type == ItemType.Consumable);
         equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !uislots[index].equipped);
@@ -193,7 +199,24 @@ public class Inventory : MonoBehaviour
 
     public void OnClickUseButton()
     {
-
+        if(selectedItem.item.type == ItemType.Consumable)
+        {
+            for (int i = 0; i < selectedItem.item.consumables.Length; i++)
+            {
+                switch(selectedItem.item.consumables[i].type)
+                {
+                    case ConsumableType.Health:
+                        condition.Heal(selectedItem.item.consumables[i].value);
+                        break;
+                    case ConsumableType.Hunger:
+                        condition.Eat(selectedItem.item.consumables[i].value);
+                        break;
+                }
+            }
+            // 아이템 타입이 소모형 - 소모형 타입(체력,배고픔) 에 따라 
+            // Heal, Eat 실행 (value 값을 매개변수 amount 로 전달)
+        }
+        RemoveSelectedItem(); // 사용한 아이템 삭제
     }
 
     public void OnClickEquipButton()
@@ -220,16 +243,17 @@ public class Inventory : MonoBehaviour
     private void RemoveSelectedItem()
     {
         selectedItem.quantity--;
-
-        if(selectedItem.quantity <= 0 )
+        // 수량 감소
+        if(selectedItem.quantity <= 0 ) // 수량이 0 보다 적을 경우
         {
             if (uislots[selectedItemIndex].equipped)
             {
                 UnEquip(selectedItemIndex);
-            }
+            } // 장착되어있으면 장착 해제
 
             selectedItem.item = null;
             ClearSelectedItemWindow();
+            // 인벤토리 비우기
         }
 
         UpdateUI();

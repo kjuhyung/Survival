@@ -73,11 +73,13 @@ public class PlayerConditions : MonoBehaviour, IDamagable
     public void Heal(float amount)
     {
         health.Add(amount);
+        // 체력 채우기
     }
 
     public void Eat(float amount)
     {
         hunger.Add(amount);
+        // 배고픔 채우기
     }
 
     public bool UseStamina(float amount)
