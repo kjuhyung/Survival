@@ -221,17 +221,37 @@ public class Inventory : MonoBehaviour
 
     public void OnClickEquipButton()
     {
+        if (uislots[curEquipIndex].equipped)
+        {
+            UnEquip(curEquipIndex);
+        }
+        // 현재 장착된 것이 있다면 해제
 
+        uislots[selectedItemIndex].equipped = true;
+        curEquipIndex = selectedItemIndex;        
+        EquipManager.instance.EquipNew(selectedItem.item);
+        UpdateUI();
+        // 지금 선택한 것을 장착하기
+        // 매니저를 통해 프리팹 생성
+
+        SelectItem(selectedItemIndex);
     }
 
     void UnEquip(int index)
     {
+        uislots[index].equipped = false;
+        EquipManager.instance.UnEquip();
+        UpdateUI();
 
+        if(selectedItemIndex == index)
+        {
+            SelectItem(index);
+        }
     }
 
     public void OnClickUnEquipButton()
     {
-
+        UnEquip(selectedItemIndex);
     }
 
     public void OnClickDropButton()
