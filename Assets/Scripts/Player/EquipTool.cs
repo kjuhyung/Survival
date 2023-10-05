@@ -7,6 +7,8 @@ public class EquipTool : Equip
     private bool attacking;
     public float attackDistance;
 
+    public float useStamina;
+
     [Header("# Resource Gathering")]
     public bool doseGatherResources;
 
@@ -23,13 +25,16 @@ public class EquipTool : Equip
         animator = GetComponent<Animator>();
     }
 
-    public override void OnAttackInput()
+    public override void OnAttackInput(PlayerConditions conditions)
     {
         if (!attacking)
         {
-            attacking = true;
-            animator.SetTrigger("Attack");
-            Invoke(nameof(OnCanAttack), attackRate);
+            if (conditions.UseStamina(useStamina))
+            {
+                attacking = true;
+                animator.SetTrigger("Attack");
+                Invoke(nameof(OnCanAttack), attackRate);
+            }
         }
     }
 
