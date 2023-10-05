@@ -219,7 +219,20 @@ public class Inventory : MonoBehaviour
 
     private void RemoveSelectedItem()
     {
+        selectedItem.quantity--;
 
+        if(selectedItem.quantity <= 0 )
+        {
+            if (uislots[selectedItemIndex].equipped)
+            {
+                UnEquip(selectedItemIndex);
+            }
+
+            selectedItem.item = null;
+            ClearSelectedItemWindow();
+        }
+
+        UpdateUI();
     }
 
     public void RemoveItem(ItemData item)
