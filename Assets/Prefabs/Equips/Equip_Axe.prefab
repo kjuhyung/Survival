@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRate: 0
   attackDistance: 0
-  doseGatherResources: 0
+  doseGatherResources: 1
   doesDealDamage: 0
   damage: 0
 --- !u!95 &1766728456915324147

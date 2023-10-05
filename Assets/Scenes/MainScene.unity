@@ -3610,7 +3610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curEquip: {fileID: 0}
-  equipParent: {fileID: 0}
+  equipParent: {fileID: 653690779}
 --- !u!1 &1213180689
 GameObject:
   m_ObjectHideFlags: 0
