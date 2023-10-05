@@ -37,4 +37,27 @@ public class EquipTool : Equip
     {
         attacking = false;
     }
+
+    public void OnHit()
+    {
+        Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+        
+        // 화면 중앙에 Ray 를 쏜다        
+
+        if(Physics.Raycast(ray, out hit, attackDistance)) 
+        {
+            // 맞은 것이 있다면 hit 에 할당
+
+            if(doseGatherResources && hit.collider.TryGetComponent(out Resource resource))
+            {
+                resource.Gather(hit.point, hit.normal);
+            }
+            
+            if(doesDealDamage && hit.collider.TryGetComponent(out IDamagable damageable))
+            {
+                damageable.TakePhysicalDamage(damage);
+            }
+        }
+    }
 }
